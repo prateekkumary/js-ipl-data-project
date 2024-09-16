@@ -10,46 +10,46 @@ const baseDirectory = process.cwd();
 
 const matchesFilePath = path.join(baseDirectory, 'src', 'data', 'matches.csv');
 
-const outputFolderPath=path.join(baseDirectory,'src','public','output');
+const outputFolderPath = path.join(baseDirectory, 'src', 'public', 'output');
 
 
 
-const matchPerYear={};
+const matchPerYear = {};
 
-function countMatchesPerYear(){
+function countMatchesPerYear() {
 
-    const readSteam=fs.createReadStream(matchesFilePath).pipe(csv());
+    const readSteam = fs.createReadStream(matchesFilePath).pipe(csv());
 
-    readSteam.on('data',function(row){
-        const season=row['season'];
+    readSteam.on('data', function (row) {
+        const season = row['season'];
 
-        if(matchPerYear[season]){
+        if (matchPerYear[season]) {
             matchPerYear[season]++;
         }
-        else{
-            matchPerYear[season]=1;
+        else {
+            matchPerYear[season] = 1;
         }
     });
-    readSteam.on('end' ,function(){
+    readSteam.on('end', function () {
         outputResultToJson(matchPerYear);
     });
-    readSteam.on('error', function(err){
-        console.log('Error reading file:',err);
+    readSteam.on('error', function (err) {
+        console.log('Error reading file:', err);
     })
-    
-}
-function outputResultToJson(data){
 
-    if(!fs.existsSync(outputFolderPath)){
-        fs.mkdir(outputFolderPath,{recursive:true});
+}
+function outputResultToJson(data) {
+
+    if (!fs.existsSync(outputFolderPath)) {
+        fs.mkdir(outputFolderPath, { recursive: true });
     }
-    const outputFilePath=path.join(outputFolderPath,'matchPerYear.json');
+    const outputFilePath = path.join(outputFolderPath, 'matchPerYear.json');
 
-   fs.writeFileSync(outputFilePath,JSON.stringify(data,null,2),'utf-8');
-   console.log('Result writen to matchPerYear.json');
+    fs.writeFileSync(outputFilePath, JSON.stringify(data, null, 2), 'utf-8');
+    console.log('Result writen to matchPerYear.json');
 }
 
-function main(){
+function main() {
     countMatchesPerYear();
 }
 
