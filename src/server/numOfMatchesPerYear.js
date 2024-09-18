@@ -24,9 +24,5 @@ function countMatchesPerYear() {
 }
 const Result = countMatchesPerYear();
 
-fs.writeFileSync(
-  "./src/public/output/matchPerYear.json",
-  JSON.stringify(Result, null, 2),
-  "utf-8"
-);
+fs.writeFileSync("./src/public/output/matchPerYear.json",JSON.stringify(Result, null, 2),"utf-8");
 console.log("Result written to matchesPerYEar.json");
